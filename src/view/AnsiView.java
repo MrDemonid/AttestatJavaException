@@ -23,7 +23,6 @@ public class AnsiView extends ConsoleView {
 
     @Override
     public void error(String msg) {
-        super.output(ANSI_ERROR + "Error: " + ANSI_RESET);
-        super.error(ANSI_ERROR_TEXT + msg + ANSI_RESET);
+        super.error(String.format("%sError: %s%s%s%s", ANSI_ERROR, ANSI_RESET, ANSI_ERROR_TEXT, msg, ANSI_RESET));
     }
 }
