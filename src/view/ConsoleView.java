@@ -1,5 +1,6 @@
 package view;
 
+import java.io.PrintStream;
 import java.util.Scanner;
 
 public class ConsoleView extends View {
@@ -23,5 +24,12 @@ public class ConsoleView extends View {
     public void error(String msg)
     {
         System.out.print(msg);
+        System.out.flush();
+    }
+
+    @Override
+    public PrintStream getStream()
+    {
+        return System.out;
     }
 }

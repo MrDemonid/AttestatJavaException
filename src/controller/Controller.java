@@ -5,6 +5,8 @@ import ex.BadParametersCountException;
 import model.Model;
 import view.View;
 
+import java.io.IOException;
+
 public class Controller {
     private View view;
     private Model model;
@@ -17,16 +19,27 @@ public class Controller {
 
     public void run()
     {
-        view.output("Введите данные, в формате: Фамилия Имя Отчество ДР Телефон Пол\n" +
-                    "где:\n" +
-                    "ДР - дата рождения, в формате дд.мм.гггг\n" +
-                    "Телефон - номер телефона, только цифры\n" +
-                    "Пол - символ (m - мужской, f - женский)\n");
-        try {
-            model.input("Иванов Сидор Сергеевич 27.08.1975 79534452805 m");
-        } catch (BadParametersCountException | BadFormatDataException e)
+        while (true)
         {
-            view.error(e.getMessage());
+            view.output("\n\nВведите данные, в формате: Фамилия Имя Отчество dd.mm.yyyy Телефон Пол\n" +
+                    "где:\n" +
+                    "dd.mm.yyyy - дата рождения\n" +
+                    "Телефон - номер телефона, только цифры\n" +
+                    "Пол - символ (m - мужской, f - женский)\n" +
+                    "\nили 'exit' - для выхода.\n");
+            try {
+                String cmd = view.input(">");
+                if (cmd.equalsIgnoreCase("exit"))
+                    break;
+                model.save(cmd);
+                view.output("\nЗапись успешно добавлена.\n");
+            } catch (BadParametersCountException | BadFormatDataException e)
+            {
+                view.error(e.getMessage());
+            } catch (IOException e) {
+                view.error("Ошибка записи в файл: " + e.getMessage() + "\n");
+                e.printStackTrace(view.getStream());
+            }
         }
 
     }
